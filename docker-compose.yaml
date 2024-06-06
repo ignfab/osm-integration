@@ -1,0 +1,39 @@
+services:
+  terminal:
+    image: osm-integration
+    container_name: osm_integration
+    command: [ "/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait" ]
+    build:
+      context: .
+      args:
+      - http_proxy
+      - https_proxy
+    environment:
+      - http_proxy
+      - https_proxy
+      - HTTP_PROXY
+      - HTTPS_PROXY
+      - PGHOST=db
+      - PGPORT=5432
+      - PGUSER=postgres
+      - PGPASSWORD=ChangeIt
+      - PGDATABASE=osm
+    volumes:
+      - integration-data:/opt/osm-integration/data
+      - osm-carto-data:/opt/osm-integration/styles/openstreetmap-carto/data
+  db:
+    image: postgis/postgis:15-3.4-alpine
+    container_name: osm_db
+    environment:
+      - POSTGRES_PASSWORD=ChangeIt
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
+    name: osm-db-data
+  integration-data:
+    name: osm-integration-data
+  osm-carto-data:
+    name: osm-carto-data
+
