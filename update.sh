@@ -10,13 +10,28 @@ OSM_STYLES_DIR=${SCRIPT_DIR}/styles
 OSM_CARTO_DIR=${OSM_STYLES_DIR}/openstreetmap-carto
 
 #--------------------------------------------------------------
-# Handle params
+# Handle import / update options
 #--------------------------------------------------------------
+OSM_DATA_DIR=${OSM_DATA_DIR:-${SCRIPT_DIR}/data}
+# optionnal
+OSM_FLAT_NODES_PATH=${OSM_DATA_DIR}/nodes.raw
 
 PGDATABASE=${PGDATABASE:-osm}
+echo "[INFO] PGDATABASE=${PGDATABASE}"
 
+# handle cache options
 CACHE_SIZE=${CACHE_SIZE:-2000}
 echo "[INFO] CACHE_SIZE=${CACHE_SIZE}"
+OPTS_CACHE="--cache=$CACHE_SIZE"
+
+USE_FLAT_NODES=${USE_FLAT_NODES:-0}
+echo "[INFO] USE_FLAT_NODES=${USE_FLAT_NODES}"
+if [ "$USE_FLAT_NODES" != "0" ];
+then
+    OPTS_CACHE="--flat-nodes ${OSM_FLAT_NODES_PATH} --cache=0"
+fi
+
+echo "[INFO] OPTS_CACHE=${OPTS_CACHE}"
 
 #--------------------------------------------------------------
 # Download openstreetmap-carto if required
@@ -34,6 +49,8 @@ osm2pgsql-replication update --verbose -- \
     --slim \
     --hstore \
     --multi-geometry \
-    --cache=$CACHE_SIZE \
+    --log-progress=true \
+    ${OPTS_CACHE} \
     --style="${OSM_CARTO_DIR}/openstreetmap-carto.style" \
     --tag-transform-script="${OSM_CARTO_DIR}/openstreetmap-carto.lua"
+
