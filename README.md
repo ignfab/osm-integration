@@ -41,13 +41,14 @@ export OSM_PLANET_URL=https://download.geofabrik.de/europe/monaco-latest.osm.pbf
 #export OSM_PLANET_URL=https://download.geofabrik.de/europe/france-latest.osm.pbf
 
 # Espagne
+#export CACHE_SIZE=2000
 #export OSM_PLANET_URL=http://download.geofabrik.de/europe/spain-latest.osm.pbf
 
 # Côte d'ivoire
 #export OSM_PLANET_URL=https://download.geofabrik.de/africa/ivory-coast-latest.osm.pbf
 
 # Monde entier
-#export CACHE_SIZE=20000
+#export USE_FLAT_NODES=1
 #export OSM_PLANET_URL=https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf
 
 bash osm2pgsql/import.sh
@@ -81,7 +82,7 @@ bash import.sh
 
 ## TODO
 
-* Ajouter une option `USE_CACHE_NODES` à false par défaut
+* Ajouter une option `USE_FLAT_NODES` à false par défaut
 * Créer un utilisateur "osmrw" et un utilisateur "osmro"
 * Vérifier la possibilité de faire le lien avec un serveur de tuile (invalidation des tuiles)
 
