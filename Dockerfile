@@ -23,11 +23,10 @@ RUN groupadd -g "${GID}" osm \
 RUN mkdir -p /opt/osm-integration
 WORKDIR /opt/osm-integration
 
-COPY *.sh .
-RUN chmod +x *.sh
+COPY bin/ bin
+RUN chmod +x bin/*.sh
 
-RUN bash get-styles.sh
-
+RUN bash bin/get-styles.sh
 
 RUN mkdir -p /opt/osm-integration/data \
  && chown -R osm:osm /opt/osm-integration/data

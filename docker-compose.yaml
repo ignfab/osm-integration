@@ -9,6 +9,9 @@ services:
       - http_proxy
       - https_proxy
     environment:
+      - OSM_PLANET_URL=$OSM_PLANET_URL
+      - USE_FLAT_NODES=$USE_FLAT_NODES
+      - CACHE_SIZE=$CACHE_SIZE
       - http_proxy
       - https_proxy
       - HTTP_PROXY
@@ -16,7 +19,7 @@ services:
       - PGHOST=db
       - PGPORT=5432
       - PGUSER=postgres
-      - PGPASSWORD=ChangeIt
+      - PGPASSWORD=$POSTGRES_PASSWORD
       - PGDATABASE=osm
     volumes:
       - integration-data:/opt/osm-integration/data
@@ -25,7 +28,7 @@ services:
     image: postgis/postgis:15-3.4-alpine
     container_name: osm_db
     environment:
-      - POSTGRES_PASSWORD=ChangeIt
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
     volumes:
       - db-data:/var/lib/postgresql/data
 

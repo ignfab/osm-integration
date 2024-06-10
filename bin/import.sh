@@ -5,14 +5,15 @@
 #--------------------------------------------------------------
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+ROOT_DIR=$(dirname "$SCRIPT_DIR")
 
-OSM_STYLES_DIR=${SCRIPT_DIR}/styles
+OSM_STYLES_DIR=${ROOT_DIR}/styles
 OSM_CARTO_DIR=${OSM_STYLES_DIR}/openstreetmap-carto
 
 #--------------------------------------------------------------
 # Handle import / update options
 #--------------------------------------------------------------
-OSM_DATA_DIR=${OSM_DATA_DIR:-${SCRIPT_DIR}/data}
+OSM_DATA_DIR=${OSM_DATA_DIR:-${ROOT_DIR}/data}
 # optionnal
 OSM_FLAT_NODES_PATH=${OSM_DATA_DIR}/nodes.raw
 

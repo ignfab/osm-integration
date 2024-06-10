@@ -5,22 +5,32 @@
 ## Prérequis
 
 * Instance PostgreSQL avec tuning adéquat
-* osm2pgsql unzip gdal-bin python3-psycopg2
+* python3-psycopg2
+* osm2pgsql
+* unzip
+* gdal-bin
 
 ## Principaux scripts
 
 * [install.sh](install.sh) : utilisation des utilitaires (osm2pgsql, unzip, gdal-bin,...)
-* [import.sh](import.sh) : import initial des données
-* [update.sh](update.sh) : mise à jour des données
+* [bin/import.sh](bin/import.sh) : import initial des données
+* [bin/update.sh](bin/update.sh) : mise à jour des données
 
 ## Paramétrage
 
 La connexion à la base de données s'appuie sur les variables d'environnements standards de PostgreSQL (PGHOST, PGPORT, PGUSER, PGPASSWORD, PGDATABASE,...).
 
-| Variable           | Description                                    | Valeur par défaut                                          |
-| ------------------ | ---------------------------------------------- | ---------------------------------------------------------- |
-| **OSM_PLANET_URL** | URL du fichier PBF pour [import.sh](import.sh) | https://download.geofabrik.de/europe/monaco-latest.osm.pbf |
-| OSM_DATA_DIR       | Dossier de téléchargement des données          | `${SCRIPT_DIR}/data`                                       |
+| Variable           | Description                                               | Valeur par défaut                                          |
+| ------------------ | --------------------------------------------------------- | ---------------------------------------------------------- |
+| **OSM_PLANET_URL** | URL du fichier PBF pour [import.sh](import.sh)            | https://download.geofabrik.de/europe/monaco-latest.osm.pbf |
+| OSM_DATA_DIR       | Dossier de téléchargement des données                     | `./data`                                                   |
+| CACHE_SIZE         | Permet d'adapter la taille du cache pour les noeuds       | `2000` (1)                                                    |
+| USE_FLAT_NODES     | Permet d'activer `--flat-nodes=${OSM_DATA_DIR}/nodes.raw` | `0` (2)                                                        |
+
+Remarques :
+
+* (1) Voir [osm2pgsql.org - Caching](https://osm2pgsql.org/doc/manual.html#caching), compter `20000` pour import monde (soit 20Gi)
+* (2) Il faut alors conserver le fichier `${OSM_DATA_DIR}/nodes.raw` qui remplace la table `planet_osm_nodes`
 
 
 ## Utilisation
@@ -65,26 +75,26 @@ docker compose build
 # Démarrer la stack avec osm-integration en mode terminal
 docker compose up -d
 
+# Configurer l'import
+export OSM_PLANET_URL=https://download.geofabrik.de/europe/monaco-latest.osm.pbf
+export CACHE_SIZE=2000
+docker compose run terminal bin/update.sh
+
+# Mettre à jour les données
+docker compose run terminal bin/update.sh
+```
+
+Pour le debug :
+
+```bash
 # Se connecter à osm-integration en mode terminal
 docker compose exec terminal /bin/bash
 #... on est alors dans le conteneur :
 
 # Vérifier l'accès à la BDD
 psql -l
-
-# Importer les données
-export CACHE_SIZE=2000
-export OSM_PLANET_URL=https://download.geofabrik.de/europe/monaco-latest.osm.pbf
-
-bash import.sh
 ```
 
-
-## TODO
-
-* Ajouter une option `USE_FLAT_NODES` à false par défaut
-* Créer un utilisateur "osmrw" et un utilisateur "osmro"
-* Vérifier la possibilité de faire le lien avec un serveur de tuile (invalidation des tuiles)
 
 ## Licence
 
