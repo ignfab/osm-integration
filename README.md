@@ -1,6 +1,6 @@
 # osm-integration
 
-**!!!EXPERIMENTAL!!!** Scripts [import.sh](import.sh) et [update.sh](update.sh) pour les chargements des données OSM dans PostgreSQL s'appuyant sur [osm2pgsql](https://osm2pgsql.org/doc/manual.html) et [osm2pgsql-replication](https://osm2pgsql.org/doc/man/osm2pgsql-replication-1.9.1.html).
+**!!!EXPERIMENTAL!!!** Scripts d'import et de mise à jour des données OSM dans PostgreSQL s'appuyant sur [osm2pgsql](https://osm2pgsql.org/doc/manual.html) et [osm2pgsql-replication](https://osm2pgsql.org/doc/man/osm2pgsql-replication-1.9.1.html).
 
 ## Prérequis
 
@@ -22,11 +22,12 @@ La connexion à la base de données s'appuie sur les variables d'environnements 
 
 | Variable           | Description                                                        | Valeur par défaut                                          |
 | ------------------ | ------------------------------------------------------------------ | ---------------------------------------------------------- |
-| **OSM_PLANET_URL** | URL du fichier PBF pour [import.sh](import.sh)                     | https://download.geofabrik.de/europe/monaco-latest.osm.pbf |
+| **OSM_PLANET_URL** | URL du fichier PBF utilisée uniquement pour l'import               | https://download.geofabrik.de/europe/monaco-latest.osm.pbf |
 | OSM_DATA_DIR       | Dossier de téléchargement des données                              | `./data`                                                   |
 | CACHE_SIZE         | Permet d'adapter la taille du cache pour les noeuds                | `2000` (1)                                                 |
 | USE_FLAT_NODES     | Permet d'activer `--flat-nodes=${OSM_DATA_DIR}/nodes.raw`          | `0` (2)                                                    |
 | CREATE_DB          | Permet de désactiver la création automatique de la base de données | `0`                                                        |
+| LOG_PROGRESS       | Permet de désactiver le reporting de la progression                | `1`                                                        |
 
 Remarques :
 
@@ -62,7 +63,7 @@ export OSM_PLANET_URL=https://download.geofabrik.de/europe/monaco-latest.osm.pbf
 #export USE_FLAT_NODES=1
 #export OSM_PLANET_URL=https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf
 
-bash osm2pgsql/import.sh
+bash bin/import.sh
 ```
 
 ## Utlisation avec docker
@@ -79,17 +80,17 @@ docker compose up -d
 # Configurer l'import
 export OSM_PLANET_URL=https://download.geofabrik.de/europe/monaco-latest.osm.pbf
 export CACHE_SIZE=2000
-docker compose run terminal bin/update.sh
+docker compose run integration bin/update.sh
 
 # Mettre à jour les données
-docker compose run terminal bin/update.sh
+docker compose run integration bin/update.sh
 ```
 
 Pour le debug :
 
 ```bash
 # Se connecter à osm-integration en mode terminal
-docker compose exec terminal /bin/bash
+docker compose exec integration /bin/bash
 #... on est alors dans le conteneur :
 
 # Vérifier l'accès à la BDD
