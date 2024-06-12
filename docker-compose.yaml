@@ -1,5 +1,5 @@
 services:
-  terminal:
+  integration:
     image: osm-integration
     container_name: osm_integration
     command: [ "/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait" ]

@@ -1,6 +1,6 @@
 # osm-integration
 
-**!!!EXPERIMENTAL!!!** Scripts [import.sh](import.sh) et [update.sh](update.sh) pour les chargements des données OSM dans PostgreSQL s'appuyant sur [osm2pgsql](https://osm2pgsql.org/doc/manual.html) et [osm2pgsql-replication](https://osm2pgsql.org/doc/man/osm2pgsql-replication-1.9.1.html).
+**!!!EXPERIMENTAL!!!** Scripts d'import et de mise à jour des données OSM dans PostgreSQL s'appuyant sur [osm2pgsql](https://osm2pgsql.org/doc/manual.html) et [osm2pgsql-replication](https://osm2pgsql.org/doc/man/osm2pgsql-replication-1.9.1.html).
 
 ## Prérequis
 
@@ -62,7 +62,7 @@ export OSM_PLANET_URL=https://download.geofabrik.de/europe/monaco-latest.osm.pbf
 #export USE_FLAT_NODES=1
 #export OSM_PLANET_URL=https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf
 
-bash osm2pgsql/import.sh
+bash bin/import.sh
 ```
 
 ## Utlisation avec docker
@@ -79,17 +79,17 @@ docker compose up -d
 # Configurer l'import
 export OSM_PLANET_URL=https://download.geofabrik.de/europe/monaco-latest.osm.pbf
 export CACHE_SIZE=2000
-docker compose run terminal bin/update.sh
+docker compose run integration bin/update.sh
 
 # Mettre à jour les données
-docker compose run terminal bin/update.sh
+docker compose run integration bin/update.sh
 ```
 
 Pour le debug :
 
 ```bash
 # Se connecter à osm-integration en mode terminal
-docker compose exec terminal /bin/bash
+docker compose exec integration /bin/bash
 #... on est alors dans le conteneur :
 
 # Vérifier l'accès à la BDD
