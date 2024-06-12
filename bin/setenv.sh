@@ -22,22 +22,39 @@ fi
 # Compute storage paths
 #--------------------------------------------------------------
 export OSM_DATA_DIR=${OSM_DATA_DIR:-${ROOT_DIR}/data}
-# optionnal
+# optionnal (only for USE_FLAT_NODES)
 export OSM_FLAT_NODES_PATH=${OSM_DATA_DIR}/nodes.raw
 
+
 #--------------------------------------------------------------
-# Handle options for --cache and --flat-nodes
+# static osm2pgsql options
 #--------------------------------------------------------------
-CACHE_SIZE=${CACHE_SIZE:-2000}
-echo "[INFO] CACHE_SIZE=${CACHE_SIZE}"
-OSM2PGSQL_OPTS="--cache=$CACHE_SIZE"
+OSM2PGSQL_OPTS="--slim --hstore --multi-geometry"
+
+LOG_PROGRESS=${LOG_PROGRESS:-1}
+echo "[INFO] LOG_PROGRESS=${LOG_PROGRESS}"
+if [ "$LOG_PROGRESS" != "0" ];
+then
+    OSM2PGSQL_OPTS="${OSM2PGSQL_OPTS} --log-progress=true"
+else
+    OSM2PGSQL_OPTS="${OSM2PGSQL_OPTS} --log-progress=false"
+fi
+
+#--------------------------------------------------------------
+# Handle options for --flat-nodes and --cache
+#--------------------------------------------------------------
 
 USE_FLAT_NODES=${USE_FLAT_NODES:-0}
 echo "[INFO] USE_FLAT_NODES=${USE_FLAT_NODES}"
 if [ "$USE_FLAT_NODES" != "0" ];
 then
-    OSM2PGSQL_OPTS="--flat-nodes ${OSM_FLAT_NODES_PATH} --cache=0"
+    OSM2PGSQL_OPTS="--flat-nodes ${OSM_FLAT_NODES_PATH}"
 fi
+
+# Use CACHE_SIZE=0 with USE_FLAT_NODES 
+CACHE_SIZE=${CACHE_SIZE:-2000}
+echo "[INFO] CACHE_SIZE=${CACHE_SIZE}"
+OSM2PGSQL_OPTS="${OSM2PGSQL_OPTS} --cache=$CACHE_SIZE"
 
 #--------------------------------------------------------------
 # Compute storage paths

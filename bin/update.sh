@@ -20,8 +20,6 @@ echo "[INFO] OSM2PGSQL_OPTS=${OSM2PGSQL_OPTS}"
 #--------------------------------------------------------------
 osm2pgsql-replication update --verbose -- \
     --database=$PGDATABASE \
-    --slim --hstore --multi-geometry \
-    --log-progress=true \
     ${OSM2PGSQL_OPTS} \
     --style="${OSM_CARTO_DIR}/openstreetmap-carto.style" \
     --tag-transform-script="${OSM_CARTO_DIR}/openstreetmap-carto.lua"
