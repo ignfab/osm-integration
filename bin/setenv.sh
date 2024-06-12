@@ -23,7 +23,8 @@ fi
 #--------------------------------------------------------------
 export OSM_DATA_DIR=${OSM_DATA_DIR:-${ROOT_DIR}/data}
 # optionnal (only for USE_FLAT_NODES)
-export OSM_FLAT_NODES_PATH=${OSM_DATA_DIR}/nodes.raw
+DEFAULT_FLAT_NODES_PATH=${OSM_DATA_DIR}/nodes.raw
+export OSM_FLAT_NODES_PATH=${OSM_FLAT_NODES_PATH:-$DEFAULT_FLAT_NODES_PATH}
 
 
 #--------------------------------------------------------------
@@ -48,7 +49,7 @@ USE_FLAT_NODES=${USE_FLAT_NODES:-0}
 echo "[INFO] USE_FLAT_NODES=${USE_FLAT_NODES}"
 if [ "$USE_FLAT_NODES" != "0" ];
 then
-    OSM2PGSQL_OPTS="--flat-nodes ${OSM_FLAT_NODES_PATH}"
+    OSM2PGSQL_OPTS="${OSM2PGSQL_OPTS} --flat-nodes ${OSM_FLAT_NODES_PATH}"
 fi
 
 # Use CACHE_SIZE=0 with USE_FLAT_NODES 

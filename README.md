@@ -20,14 +20,15 @@
 
 La connexion à la base de données s'appuie sur les variables d'environnements standards de PostgreSQL (PGHOST, PGPORT, PGUSER, PGPASSWORD, PGDATABASE,...).
 
-| Variable           | Description                                                        | Valeur par défaut                                          |
-| ------------------ | ------------------------------------------------------------------ | ---------------------------------------------------------- |
-| **OSM_PLANET_URL** | URL du fichier PBF utilisée uniquement pour l'import               | https://download.geofabrik.de/europe/monaco-latest.osm.pbf |
-| OSM_DATA_DIR       | Dossier de téléchargement des données                              | `./data`                                                   |
-| CACHE_SIZE         | Permet d'adapter la taille du cache pour les noeuds                | `2000` (1)                                                 |
-| USE_FLAT_NODES     | Permet d'activer `--flat-nodes=${OSM_DATA_DIR}/nodes.raw`          | `0` (2)                                                    |
-| CREATE_DB          | Permet de désactiver la création automatique de la base de données | `0`                                                        |
-| LOG_PROGRESS       | Permet de désactiver le reporting de la progression                | `1`                                                        |
+| Variable            | Description                                                        | Valeur par défaut                                          |
+| ------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------- |
+| **OSM_PLANET_URL**  | URL du fichier PBF utilisée uniquement pour l'import               | https://download.geofabrik.de/europe/monaco-latest.osm.pbf |
+| OSM_DATA_DIR        | Dossier de téléchargement des données                              | `./data`                                                   |
+| CACHE_SIZE          | Permet d'adapter la taille du cache pour les noeuds                | `2000` (1)                                                 |
+| USE_FLAT_NODES      | Permet d'activer l'utilisation de `--flat-nodes`                   | `0` (2)                                                    |
+| OSM_FLAT_NODES_PATH | Permet de personnaliser l'emplacement du fichier flat nodes        | `${OSM_DATA_DIR}/nodes.raw`                                |
+| CREATE_DB           | Permet de désactiver la création automatique de la base de données | `0`                                                        |
+| LOG_PROGRESS        | Permet de désactiver le reporting de la progression                | `1`                                                        |
 
 Remarques :
 
